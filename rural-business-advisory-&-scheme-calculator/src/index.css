@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'monospace', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
+    /* font-family: 'Inter', system-ui, -apple-system, sans-serif; */
+    color: #3b3a32;
+    background-color: #f8f7f2;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-dpr-modal,
+  #printable-dpr-modal * {
+    visibility: visible;
+  }
+  #printable-dpr-modal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white;
+    box-shadow: none;
+  }
+  #dpr-print-content {
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 20px !important;
+  }
+}

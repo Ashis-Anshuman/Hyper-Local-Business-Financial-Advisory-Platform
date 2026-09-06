@@ -1,0 +1,6 @@
+{
+  "name": "Rural Business Advisory & Scheme Calculator",
+  "description": "AI-driven hyper-local business advisory and financial structuring assistant for rural micro-entrepreneurs. Generates localized feasibility studies, market reach, SWOT, and auto-routes concessional loan schemes with quarterly moratorium amortization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
