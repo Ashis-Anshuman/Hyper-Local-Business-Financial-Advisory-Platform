@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useGramUdyamStore } from "../store/useGramUdyamStore";
 import {
   Landmark,
   Globe,
@@ -19,6 +20,7 @@ import {
   Store,
   Scale,
   Award,
+  UserPlus,
 } from "lucide-react";
 import { formatINR } from "../utils/calculator";
 
@@ -89,18 +91,16 @@ const SUCCESS_STORIES = [
   },
 ];
 
-const LandingPage = () => {
-  // {user,
-  // onGoToDashboard,
-  // onLogout,
-  // onLoginClick,
-  // onQuickDemoLogin,
-  // currentLang = "en", 
-  // onSelectLang,}
-
-  // onLoginClick = () => {
-  //   // set
-  // }
+const LandingPage = (props) => {
+  const store = useGramUdyamStore();
+  const user = props.user !== undefined ? props.user : store.user;
+  const onGoToDashboard = props.onGoToDashboard ?? (() => store.setIsLandingView(false));
+  const onLogout = props.onLogout ?? store.logout;
+  const onLoginClick = props.onLoginClick ?? (() => store.setIsAuthModalOpen(true));
+  const onRegisterClick = props.onRegisterClick ?? (() => store.setIsRegisterView(true));
+  const onQuickDemoLogin = props.onQuickDemoLogin ?? store.quickDemoLogin;
+  const currentLang = props.currentLang ?? store.currentLang;
+  const onSelectLang = props.onSelectLang ?? store.setCurrentLang;
   const [sliderMargin, setSliderMargin] = useState(100000);
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
@@ -187,7 +187,7 @@ const LandingPage = () => {
               <Globe className="w-3.5 h-3.5 text-[#5a6344]" />
               <select
                 aria-label="Select Language"
-                value={"en"}
+                value={currentLang}
                 onChange={(e) => onSelectLang && onSelectLang(e.target.value)}
                 className="bg-transparent text-xs font-semibold text-[#3b3a32] focus:outline-none cursor-pointer pr-1"
               >
@@ -200,15 +200,15 @@ const LandingPage = () => {
             </div>
 
             {/* Sign In or Active Session Controls */}
-            {false ? (
+            {user ? (
               <div className="flex items-center gap-2">
                 <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-[#e9e4d9] rounded-full border border-[#d6cfbe] text-xs">
                   <span className="w-2 h-2 rounded-full bg-[#5a6344] animate-pulse"></span>
-                  <span className="font-bold text-[#2a2a22] truncate max-w-[130px]">John Doe</span>
+                  <span className="font-bold text-[#2a2a22] truncate max-w-[130px]">{user.name}</span>
                 </div>
                 <button
                   type="button"
-                  // onClick={onGoToDashboard}
+                  onClick={onGoToDashboard}
                   className="px-4 py-2 text-xs font-bold text-white bg-[#5a6344] hover:bg-[#4d5539] rounded-full shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
                 >
                   <span>Open My DPR Dashboard</span>
@@ -216,23 +216,23 @@ const LandingPage = () => {
                 </button>
               </div>
             ) : (
-              <>
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  // onClick={onLoginClick}
-                  className="px-4 py-2 text-xs font-bold text-[#5a6344] hover:text-[#2a2a22] bg-[#ffffff] hover:bg-[#e9e4d9] border border-[#d6cfbe] rounded-full transition-all cursor-pointer"
+                  onClick={onRegisterClick}
+                  className="px-3.5 py-1.5 text-xs font-bold text-white bg-[#5a6344] hover:bg-[#4d5539] rounded-full shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>Register</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onLoginClick}
+                  className="px-3.5 py-1.5 text-xs font-bold text-[#5a6344] hover:text-[#2a2a22] bg-[#ffffff] hover:bg-[#e9e4d9] border border-[#d6cfbe] rounded-full transition-all cursor-pointer"
                 >
                   Sign In
                 </button>
-                <button
-                  type="button"
-                  // onClick={onLoginClick}
-                  className="px-4 py-2 text-xs font-bold text-white bg-[#5a6344] hover:bg-[#4d5539] rounded-full shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
-                >
-                  <span>Launch Platform</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -261,20 +261,29 @@ const LandingPage = () => {
               <div className="flex flex-wrap items-center gap-3.5 pt-2">
                 <button
                   type="button"
-                  // onClick={onLoginClick}
+                  onClick={onRegisterClick}
                   className="px-6 py-3.5 rounded-2xl bg-[#5a6344] hover:bg-[#4d5539] text-white text-xs sm:text-sm font-bold shadow-sm hover:shadow-md transition-all flex items-center gap-2 cursor-pointer"
                 >
-                  <span>Start Feasibility Study &amp; Plan</span>
+                  <UserPlus className="w-4 h-4" />
+                  <span>Register as Beneficiary</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => onQuickDemoLogin && onQuickDemoLogin("entrepreneur")}
+                  onClick={onLoginClick}
                   className="px-5 py-3.5 rounded-2xl bg-[#ffffff] hover:bg-[#f8f7f2] border border-[#d6cfbe] text-[#2a2a22] text-xs sm:text-sm font-bold shadow-2xs transition-all flex items-center gap-2 cursor-pointer"
                 >
+                  <span>Sign In</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => onQuickDemoLogin && onQuickDemoLogin("entrepreneur")}
+                  className="px-4 py-3.5 rounded-2xl bg-[#e9e4d9] hover:bg-[#ded8cb] text-[#5a6344] text-xs sm:text-sm font-bold shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer"
+                >
                   <Store className="w-4 h-4 text-[#b45a3a]" />
-                  <span>1-Click Entrepreneur Demo</span>
+                  <span>1-Click Demo</span>
                 </button>
               </div>
 
@@ -383,7 +392,7 @@ const LandingPage = () => {
 
                 <button
                   type="button"
-                  // onClick={onLoginClick}
+                  onClick={onLoginClick}
                   className="w-full py-2.5 rounded-xl bg-[#5a6344] hover:bg-[#4d5539] text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                 >
                   <span>Build Full Feasibility Report with this Budget</span>
@@ -520,7 +529,7 @@ const LandingPage = () => {
 
               <button
                 type="button"
-                // onClick={onLoginClick}
+                onClick={onLoginClick}
                 className="w-full py-2.5 rounded-2xl bg-[#b45a3a] hover:bg-[#a04e32] text-white text-xs font-bold transition-colors cursor-pointer shadow-xs"
               >
                 Calculate Micro Finance Plan
@@ -569,7 +578,7 @@ const LandingPage = () => {
 
               <button
                 type="button"
-                // onClick={onLoginClick}
+                onClick={onLoginClick}
                 className="w-full py-2.5 rounded-2xl bg-[#5a6344] hover:bg-[#4d5539] text-white text-xs font-bold transition-colors cursor-pointer shadow-xs"
               >
                 Calculate Term Loan Plan
@@ -753,7 +762,7 @@ const LandingPage = () => {
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <button
               type="button"
-              // onClick={onLoginClick}
+              onClick={onLoginClick}
               className="px-7 py-3.5 rounded-2xl bg-[#b45a3a] hover:bg-[#a04e32] text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer flex items-center gap-2"
             >
               <span>Sign In / Register Now</span>
@@ -789,7 +798,7 @@ const LandingPage = () => {
             <div className="flex items-center gap-4 text-xs">
               <button
                 type="button"
-                // onClick={onLoginClick}
+                onClick={onLoginClick}
                 className="hover:text-white underline underline-offset-2"
               >
                 Sign In

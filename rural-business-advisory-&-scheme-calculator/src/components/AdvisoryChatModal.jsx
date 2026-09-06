@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { X, Send, Bot, User, RefreshCw } from "lucide-react";
 import { TRANSLATIONS } from "../data/translations";
-import { sendAdvisorChat } from "../services/api";
+// import { sendAdvisorChat } from "../services/api";
 
 const FREQUENT_QUESTIONS = [
   "Do I need land collateral for this concessional loan?",

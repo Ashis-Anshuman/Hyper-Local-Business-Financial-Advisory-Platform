@@ -5,6 +5,7 @@ import { userAuthStore } from './store/userauthstore.js'
 import LoginPage from './pages/LoginPage.jsx'
 import SignInPage from './pages/SignInPage.jsx'
 import LoggedinHomePage from './pages/LoggedinHomePage.jsx'
+import RegistrationPage from './pages/RegistrationPage.jsx'
 
 const App = () => {
   const {isAuthenticated} = userAuthStore();

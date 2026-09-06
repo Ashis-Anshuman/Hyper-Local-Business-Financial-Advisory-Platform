@@ -7,7 +7,7 @@ import { FeasibilityReportView } from "../components/FeasibilityReportView";
 import { AdvisoryChatModal } from "../components/AdvisoryChatModal";
 import { PrintableDPR } from "../components/PrintableDPR";
 import { calculateSchemeDetails, formatINR } from "../utils/calculator";
-import { fetchFeasibilityReport } from "../services/api";
+
 import { TRANSLATIONS } from "../data/translations";
 import {
   Landmark,
@@ -357,12 +357,12 @@ export default function LoggedinHomePage() {
         {(activeTab === "all" || activeTab === "scheme") && (
           <div className="space-y-6">
             <SchemeSummaryCard scheme={scheme} currentLang={currentLang} />
-            <FinancialBreakdown
+            {/* <FinancialBreakdown
               scheme={scheme}
               currentLang={currentLang}
               capexItems={report.capexItems}
               opexItems={report.opexItems}
-            />
+            /> */}
           </div>
         )}
 
